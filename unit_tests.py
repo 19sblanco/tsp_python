@@ -3,6 +3,9 @@ import random
 import math as m
 
 import tsp
+import lib
+
+random.seed(0)
 
 class TestAddFunction(unittest.TestCase):
 
@@ -75,24 +78,38 @@ class TestAddFunction(unittest.TestCase):
         shortest_dist, shortest_path = tsp.tsp(list(range(len(cities))), distances)
         self.assertEqual(0, shortest_dist)
 
+    def test_tsp_4(self):
+        cities = [
+            (0,0),
+            (-1,2),
+            (1,4),
+            (-1,8),
+            (1,12),
+        ]
+        distances = tsp.calculate_distances(cities)
+        shortest_dist, shortest_path = tsp.tsp(list(range(len(cities))), distances)
+        self.assertAlmostEqual(24.8313095581, shortest_dist)
 
-# library functions
-def bubble_sort(lst):
-    new_lst = []
-    for i in range(len(lst)):
-        new_lst.append(lst[i])
-    while True:
-        swapped = False
-        for i in range(len(new_lst)-1):
-            if new_lst[i] > new_lst[i+1]:
-                left = new_lst[i]
-                right = new_lst[i+1]
-                new_lst[i] = right
-                new_lst[i+1] = left
-                swapped = True
-        if not swapped:
-            break
-    return new_lst
+    def test_tsp_5_stress_test(self):
+        for t in range(5):
+            cities = []
+            for i in range(7):
+                x = random.randint(1, 100)
+                y = random.randint(1, 100)
+                cities.append( (x, y) )
+            
+            distances = tsp.calculate_distances(cities)
+            shortest_dist, shortest_path = tsp.tsp(list(range(len(cities))), distances)
+
+            route, min_distance = lib.lib_tsp(cities)
+
+            self.assertAlmostEqual(shortest_dist, min_distance)
+
+
+
+
+
+
 
             
 if __name__ == '__main__':

@@ -20,12 +20,19 @@ def calculate_distances(cities):
 default city function
 """
 def get_cities():
+  # cities = [
+  #     (0, 0),
+  #     (-1, 1),
+  #     (1, 1),
+  #     (0, -1),
+  #     (5, 5),
+  # ]
   cities = [
-      (0, 0),
-      (-1, 1),
-      (1, 1),
-      (0, -1),
-      (5, 5),
+      (0,0),
+      (-1,2),
+      (1,4),
+      (-1,8),
+      (1,12),
   ]
   return cities
 
@@ -45,6 +52,7 @@ def tsp_helper(cc, fc, available_cities, distances, curr_dist, path):
   cp_path = path[:]
   cp_path.append(cc)
   shortest_distance = None
+  shortest_path = None
   for ac in available_cities:
     cp_ac = available_cities[:]
     cp_ac.remove(ac)
@@ -52,10 +60,12 @@ def tsp_helper(cc, fc, available_cities, distances, curr_dist, path):
     distance, best_path = tsp_helper(ac, fc, cp_ac, distances, new_dist, cp_path)
     if shortest_distance == None or distance < shortest_distance:
       shortest_distance = distance
+      shortest_path = best_path
   if not available_cities:
     shortest_distance = curr_dist + distances[cc][fc]
     best_path = cp_path
-  return shortest_distance, best_path
+    return shortest_distance, best_path
+  return shortest_distance, shortest_path
 
 
 """
@@ -86,27 +96,10 @@ def print_points(cities, path):
   print(cities[path[-1]])
 
 
-def main():
+if __name__ == '__main__':
   cities = get_cities()
   distances = calculate_distances(cities)
   shortest_dist, shortest_path = tsp(list(range(len(cities))), distances)
   print("distance", shortest_dist)
   print_points(cities, shortest_path)
 
-
-main()
-
-"""
-tsp:
-    shortest_distance = None
-    visited cities
-    for each c:
-        if c in visited: coninue
-        dist = start to me + me -> you + your shortest route
-        if dist < shortest distance: update SD
-    # at this point you have the shortest route through you
-    return shortest distance, path to end
-
-final point: return the shortest distance from that point to the starting point
-start point: loop over all starting points in a master function
-"""
