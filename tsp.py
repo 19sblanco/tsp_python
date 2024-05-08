@@ -1,3 +1,5 @@
+import time
+
 """
 calculate the distances between each city (x ,y) and storing in a distance matrix
 rows represent the city we are coming from
@@ -33,6 +35,11 @@ def get_cities():
       (1,4),
       (-1,8),
       (1,12),
+      (100, 12),
+      (12, 12),
+      (-13, -13),
+      (-130, -13),
+      (690, 42),
   ]
   return cities
 
@@ -99,7 +106,10 @@ def print_points(cities, path):
 if __name__ == '__main__':
   cities = get_cities()
   distances = calculate_distances(cities)
+  start = time.time()
   shortest_dist, shortest_path = tsp(list(range(len(cities))), distances)
+  end = time.time()
+  print("time: ", end - start)
   print("distance", shortest_dist)
   print_points(cities, shortest_path)
 
